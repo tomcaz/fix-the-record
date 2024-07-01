@@ -1,0 +1,18 @@
+.card {
+    background-color: #CCC;
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+    padding: 16px 16px;
+    overflow-y: auto;
+    min-height: 300px;
+    width: 800px;
+    display: flex;
+    flex-direction: row;
+}
+
+.card>.local,
+.card>.remote {
+    flex: 2
+}

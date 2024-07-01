@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
+import './App.css'
 
 const API_URL = "http://localhost:8080";
+
+interface ITampered {
+  tampered: boolean,
+  localData: string,
+  remoteData: string
+}
 
 function App() {
   const [data, setData] = useState<string>();
@@ -8,6 +15,7 @@ function App() {
   useEffect(() => {
     getData();
   }, []);
+  const [verifiedData, setVerified] = useState<ITampered>()
 
   const getData = async () => {
     const response = await fetch(API_URL);
@@ -29,7 +37,10 @@ function App() {
   };
 
   const verifyData = async () => {
-    throw new Error("Not implemented");
+    const response = await fetch(`${API_URL}/verify`);
+    const { tampered, remoteData, localData } = await response.json();
+    setData(remoteData)
+    setVerified({ tampered, remoteData, localData })
   };
 
   return (
@@ -63,6 +74,22 @@ function App() {
           Verify Data
         </button>
       </div>
+      {
+        verifiedData &&
+        <>
+          <h3>{verifiedData.tampered ? 'Tampered found and fixed client data' : 'No Tampered found'}</h3>
+          <div className="card">
+            <div className="local">
+              <h4>User Data</h4>
+              {verifiedData.localData}
+            </div>
+            <div className="remote">
+              <h4>User Data from Recovery Source</h4>
+              {verifiedData.remoteData}
+            </div>
+          </div>
+        </>
+      }
     </div>
   );
 }
